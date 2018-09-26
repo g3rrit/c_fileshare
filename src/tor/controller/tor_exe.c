@@ -45,8 +45,10 @@ int tor_start(char *tor_bin_dir, char **argv)
 
     log_msg("executing tor exe: %s\n", tor_bin_url);
 
+    /*
     for(int i = 0; argv[i] != 0; i++)
         log_msg("arg: %s\n", argv[i]);
+    */
 
 #ifdef _WIN32
     char arg_win[64];
@@ -60,7 +62,7 @@ int tor_start(char *tor_bin_dir, char **argv)
         cp_ptr++;
     }
 
-    log_msg("win_arg: %s\n", arg_win);
+    //log_msg("win_arg: %s\n", arg_win);
 
     STARTUPINFO info={sizeof(info)};
     if(!CreateProcess(tor_bin_url, (LPSTR)arg_win, NULL, NULL, TRUE, 0, NULL, NULL, &info, &tor_info))

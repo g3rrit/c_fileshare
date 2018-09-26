@@ -25,6 +25,39 @@ int tor_service_init(char *tor_bin_dir)
         return 0;
     }
 
+#ifdef _WIN32
+        Sleep(8000);
+#else
+        struct timespec _ts;                                
+        _ts.tv_sec = 8000 / 1000;                   
+        _ts.tv_nsec = (1000 % 1000) * 8000000;      
+        nanosleep(&_ts, 0);
+#endif
+
+    int tries = 0;
+    if(!tor_start_controller("9051", "")) 
+    {
+       log_msg("tor not running yet... retrying in 4...\n"); 
+
+#ifdef _WIN32
+        Sleep(4000);
+#else
+        struct timespec _ts;                                
+        _ts.tv_sec = 4000 / 1000;                   
+        _ts.tv_nsec = (1000 % 1000) * 4000000;      
+        nanosleep(&_ts, 0);
+#endif
+
+       tries++;
+       if(tries >= 5) 
+       {
+        log_err("starting tor controller\n");
+        tor_stop();
+        return 0;
+       }
+    }
+
+/*
     while(!tor_is_running())
     {
 #ifdef _WIN32
@@ -43,6 +76,7 @@ int tor_service_init(char *tor_bin_dir)
         tor_stop();
         return 0;
     }
+    */
 
     return 1;
 }

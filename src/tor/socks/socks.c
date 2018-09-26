@@ -4,6 +4,7 @@
 
 #include "log.h"
 #include <string.h>
+#include <stdint.h>
 
 sock_t socks_socket(char *ip, char *port);
 
